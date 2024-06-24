@@ -11,7 +11,7 @@ class Menu extends ChangeNotifier {
   final firestore = FirebaseFirestore.instance;
   List<Food> _menu = [];
 
-  Future<void> getMenu() async {
+  Future<void> getMenuItems() async {
     await firestore.collection("menu").get().then(
       (event) {
         List<Food> menuItems = [];
@@ -34,7 +34,7 @@ class Menu extends ChangeNotifier {
     notifyListeners();
   }
 
-  get menu => _menu;
+  get getMenu => _menu;
   Future<void> addFood(Food food) async {
     final foodDetails = {
       'name': food.name,

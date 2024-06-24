@@ -13,7 +13,7 @@ class MenuEditScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menu = ref.watch(menuProvider);
-    menu.getMenu();
+    menu.getMenuItems();
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
@@ -44,8 +44,8 @@ class MenuEditScreen extends ConsumerWidget {
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                children: List.generate(menu.menu.length, (index) {
-                  Food food = menu.menu[index];
+                children: List.generate(menu.getMenu.length, (index) {
+                  Food food = menu.getMenu[index];
                   return EditMenuItem(
                     food: food,
                   );

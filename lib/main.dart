@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             brightness: Brightness.light,
           ).copyWith(background: kBackgroundColor),
         ),
-        home: Bridge(),
+        home: const Bridge(),
       ),
     );
   }

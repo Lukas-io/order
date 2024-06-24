@@ -1,8 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:order/constants.dart';
 import 'package:order/screens/user/cart_screen.dart';
+import 'package:order/screens/user/order_screen.dart';
 
 import '../../data/providers.dart';
 import '../../models/food.dart';
@@ -18,9 +20,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
     final menu = ref.watch(menuProvider);
-    menu.getMenu();
+    menu.getMenuItems();
 
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OrderScreen()));
+          },
+        ),
         drawer: user.admin ? null : AppDrawer(),
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
@@ -72,11 +80,11 @@ class HomeScreen extends ConsumerWidget {
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  children: List.generate(menu.menu.length, (index) {
-                    Food food = menu.menu[index];
+                  children: List.generate(menu.getMenu.length, (index) {
+                    Food food = menu.getMenu[index];
                     return MenuItem(
                       food: food,
-                    );
+                    ).animate().shimmer(duration: Duration());
                   }),
                 ),
               ),

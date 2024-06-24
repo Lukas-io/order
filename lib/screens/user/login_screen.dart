@@ -40,7 +40,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -140,6 +139,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               ),
                             ),
+                            // onPressed: () {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const HomeScreen()));
+                            // },
+
                             onPressed: () async {
                               setState(() {
                                 showSpinner = true;
@@ -173,10 +180,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       userDocs?['profileUrl'];
                                   userProvider.clearCart();
                                   await saveUserStatus(true);
-                                  print('SAVED PROPERLY11111111111');
+
                                   await saveUserInfo(userProvider);
-                                  print(
-                                      'SAVED PROPERLY11111111111222222222222');
 
                                   setState(() {
                                     authFailed = false;

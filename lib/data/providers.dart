@@ -5,7 +5,7 @@ import 'package:order/models/order.dart';
 import '../models/user.dart';
 
 final currentUserProvider = ChangeNotifierProvider<LocalUser>((ref) {
-  return LocalUser(cartOrders: []);
+  return LocalUser(cartOrders: [], orders: []);
 });
 
 final container = ProviderContainer();

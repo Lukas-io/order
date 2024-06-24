@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:order/data/providers.dart';
 
 import 'food.dart';
 
+final container = ProviderContainer();
+
+final menu = container.read(menuProvider);
+
+//
+// container.dispose();
 class LocalUser extends ChangeNotifier {
   String name, email, uid;
   final List<Food> cartOrders;
   bool toggleSwitch = false;
   bool admin, dispatcher, loggedIn;
   String profileUrl;
+  final List<Food> orders;
 
   LocalUser({
-    // required this.completedOrders,
     required this.cartOrders,
     this.profileUrl = 'https://firebasestorage.googleapis.com/v0/b/order-c5bfb.'
         'appspot.com/o/default_profile.png?alt=media&token=df390ec0-1f66-4018-'
@@ -21,6 +29,7 @@ class LocalUser extends ChangeNotifier {
     this.dispatcher = false,
     this.uid = '',
     this.loggedIn = false,
+    required this.orders,
   });
 
   set setUserName(String name) {
@@ -81,6 +90,43 @@ class LocalUser extends ChangeNotifier {
       food.quantity++;
     }
     notifyListeners();
+  }
+
+  Future<void> addToCart(List<dynamic> orders) async {
+    for (var order in orders) {
+      String imgUrl = '';
+      String foodName = order['food'];
+      int quantity = order['quantity'];
+      double price = order['price'];
+      await menu.getMenuItems();
+      List<Food> menuItems = menu.getMenu;
+
+      for (var menuItem in menuItems) {
+        if (menuItem.name == foodName) {
+          imgUrl = menuItem.imageUrl;
+          print(imgUrl);
+          break;
+        }
+      }
+      Food food = Food(
+        imageUrl: imgUrl,
+        name: foodName,
+        quantity: quantity,
+        price: price,
+      );
+      bool added = false;
+      for (Food foodItem in cartOrders) {
+        if (food.name == foodItem.name) {
+          foodItem.quantity += food.quantity;
+          added = true;
+          break;
+        }
+      }
+      if (!added) {
+        cartOrders.add(food);
+      }
+      notifyListeners();
+    }
   }
 
   int getQuantity(Food food) {

@@ -7,6 +7,7 @@ class Order extends ChangeNotifier {
   List<Map> completedOrders = [];
   List<Map> deliveredOrders = [];
   List<Map> pendingOrders = [];
+  List<Map> userOrders = [];
 
   Order();
 
@@ -42,6 +43,26 @@ class Order extends ChangeNotifier {
         }
       },
     ).whenComplete(() => pendingOrders = pending);
+    notifyListeners();
+  }
+
+  Future<void> getUserOrders(String uid) async {
+    List<Map> orders = [];
+    await firestore.collection("orders").get().then(
+      (event) async {
+        for (var order in event.docs) {
+          try {
+            if (order.data()['uid'] == uid) {
+              orders.add(order.data());
+            }
+          } catch (e) {
+            if (kDebugMode) {
+              print('ERROR: $e');
+            }
+          }
+        }
+      },
+    ).whenComplete(() => userOrders = orders);
     notifyListeners();
   }
 
